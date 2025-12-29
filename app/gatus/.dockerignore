@@ -1,0 +1,18 @@
+.examples
+.github
+.idea
+.git
+
+# Not needed in the image build context
+test
+testdata
+web/app
+Dockerfile-upstream
+
+# Local configuration and build files
+*.db
+.env
+.env.*
+*.log
+dist
+bin
