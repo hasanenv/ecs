@@ -15,13 +15,30 @@ Thumbs.db
 # Test artefacts
 testdata/
 
-# Build artefacts 
+# Build artefacts
 dist/
 bin/
 
-# Env / secrets 
+# Env / secrets
 .env
 .env.*
 
 # Logs
 *.log
+
+# Terraform
+**/.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+terraform.tfvars
+terraform.tfvars.json
+
+# CI/CD
+coverage/
+reports/
+.tmp/
+.cache/
+
+# Docker
+*.pid
