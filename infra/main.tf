@@ -13,3 +13,9 @@ module "iam" {
 
   owner = var.owner
 }
+
+module "ecr" {
+  source = "./modules/ecr"
+
+  owner = var.owner
+}
