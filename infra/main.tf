@@ -30,8 +30,8 @@ module "security_groups" {
 module "acm" {
   source = "./modules/acm"
 
-  domain_name = module.route_53.domain_name
-  zone_id     = module.route_53.zone_id
+  domain_name = "hasangatus.click"
+  zone_id     = data.aws_route53_zone.hasangatus.zone_id
   owner       = var.owner
 }
 
@@ -48,6 +48,20 @@ module "alb" {
 module "route_53" {
   source = "./modules/route_53"
 
+  zone_id      = data.aws_route53_zone.hasangatus.zone_id
+  zone_name    = data.aws_route53_zone.hasangatus.name
   alb_dns_name = module.alb.alb_dns_name
   alb_zone_id  = module.alb.alb_zone_id
+}
+
+module "ecs" {
+  source = "./modules/ecs"
+
+  image_url                   = "${module.ecr.repository_url}:latest"
+  alb_target_group_arn        = module.alb.alb_target_group_arn
+  ecs_service_sg_id           = module.security_groups.ecs_service_sg_id
+  aws_region                  = var.aws_region
+  private_subnet_ids          = module.vpc.private_subnet_ids
+  ecs_task_execution_role_arn = module.iam.ecs_task_execution_role_arn
+  owner                       = var.owner
 }

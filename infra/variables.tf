@@ -10,6 +10,9 @@ variable "private_subnet_cidrs" {
   type = list(string)
 }
 
+variable "aws_region" {
+  type = string
+}
 variable "owner" {
   type = string
 }

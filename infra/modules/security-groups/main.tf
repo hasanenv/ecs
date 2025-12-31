@@ -46,5 +46,4 @@ resource "aws_security_group" "ecs_service_sg" {
     }
 
     tags = local.tags
-
 }

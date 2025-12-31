@@ -1,11 +1,6 @@
-data "aws_route53_zone" "hasangatus" {
-  name         = "hasangatus.click"
-  private_zone = false
-}
-
 resource "aws_route53_record" "www" {
-  zone_id = data.aws_route53_zone.hasangatus.zone_id
-  name    = "tm.${data.aws_route53_zone.hasangatus.name}"
+  zone_id = var.zone_id
+  name    = "tm.${var.zone_name}"
   type    = "A"
 
   alias {
