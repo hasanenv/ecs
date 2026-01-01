@@ -1,0 +1,52 @@
+name: ci pipeline
+
+on:
+  push:
+  pull_request:
+
+jobs: 
+  ci:
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: checkout code
+      uses: actions/checkout@v4
+
+    - name: docker build
+      run: docker build -t ci:test ./app/gatus
+
+    - name: terraform fmt
+      working-directory: infra/
+      run: terraform fmt -check -recursive
+
+    - name: terraform init (no backend)
+      working-directory: infra/
+      run: terraform init -backend=false
+
+    - name: terraform validate
+      working-directory: infra/
+      run: terraform validate
+
+    - name: install tflint
+      run: |
+        curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
+
+    - name: run tflint
+      working-directory: infra/
+      run: tflint
+
+    - name: scan image
+      uses: anchore/scan-action@v6
+      with:
+        image: "ci:test"
+
+    - name: CI summary
+      run: |
+        echo "## CI Results" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "- Docker build: ✅ Passed" >> $GITHUB_STEP_SUMMARY
+        echo "- Terraform fmt: ✅ Passed" >> $GITHUB_STEP_SUMMARY
+        echo "- Terraform validate: ✅ Passed" >> $GITHUB_STEP_SUMMARY
+        echo "- tflint: ✅ Passed" >> $GITHUB_STEP_SUMMARY
+        echo "- Image scan: ✅ Passed" >> $GITHUB_STEP_SUMMARY
