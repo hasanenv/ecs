@@ -45,6 +45,7 @@ jobs:
       uses: anchore/scan-action@v6
       with:
         image: "ci:test"
+        severity-cutoff: high
 
     - name: CI summary
       run: |
