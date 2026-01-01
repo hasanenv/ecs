@@ -1,4 +1,4 @@
-variable "vpc_cidr" { 
+variable "vpc_cidr" {
   type = string
 }
 
@@ -12,7 +12,7 @@ variable "private_subnet_cidrs" {
 
 variable "availability_zones" {
   type = list(string)
-} 
+}
 
 variable "owner" {
   type = string

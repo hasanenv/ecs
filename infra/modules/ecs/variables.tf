@@ -1,27 +1,27 @@
 variable "owner" {
-    type = string
+  type = string
 }
 
 variable "alb_target_group_arn" {
-    type = string
+  type = string
 }
 
 variable "image_url" {
-    type = string
+  type = string
 }
 
 variable "ecs_task_execution_role_arn" {
-    type = string
+  type = string
 }
 
 variable "ecs_service_sg_id" {
-    type = string
+  type = string
 }
 
 variable "aws_region" {
-    type = string
+  type = string
 }
 
 variable "private_subnet_ids" {
-    type = list(string)
+  type = list(string)
 }

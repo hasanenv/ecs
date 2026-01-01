@@ -1,19 +1,19 @@
 variable "vpc_id" {
-    type = string
+  type = string
 }
 
 variable "security_group_id" {
-    type = string
+  type = string
 }
 
 variable "public_subnet_ids" {
-    type = list(string)
+  type = list(string)
 }
 
 variable "acm_certificate_arn" {
-    type = string
+  type = string
 }
 
 variable "owner" {
-    type = string
+  type = string
 }
