@@ -37,9 +37,9 @@ jobs:
 
         - name: build image, tag, push
           run: |
-            docker build -t hasanenv/gatus:${{ GITHUB_SHA }} ./app/gatus/
-            docker tag hasanenv/gatus:${{ GITHUB_SHA }} 727646481331.dkr.ecr.eu-west-2.amazonaws.com/gatus-repo:${{ GITHUB_SHA }}
-            docker push 727646481331.dkr.ecr.eu-west-2.amazonaws.com/gatus-repo:${{ GITHUB_SHA }}
+            docker build -t hasanenv/gatus:${{ github.sha }} ./app/gatus/
+            docker tag hasanenv/gatus:${{ github.sha }} 727646481331.dkr.ecr.eu-west-2.amazonaws.com/gatus-repo:${{ github.sha }}
+            docker push 727646481331.dkr.ecr.eu-west-2.amazonaws.com/gatus-repo:${{ github.sha }}
 
         - name: terraform deploy
           working-directory: infra/
@@ -47,7 +47,7 @@ jobs:
             TF_IN_AUTOMATION: true
           run: |
             terraform init
-            terraform apply -auto-approve -var="image_tag=${{ GITHUB_SHA }}"
+            terraform apply -auto-approve -var="image_tag=${{ github.sha }}"
 
         - name: health check
           run: |
@@ -58,7 +58,7 @@ jobs:
           run: |
             echo "## CD Deployment Summary" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
-            echo "- Image tag: \`${GITHUB_SHA}\`" >> $GITHUB_STEP_SUMMARY
+            echo "- Image tag: \`$GITHUB_SHA\`" >> $GITHUB_STEP_SUMMARY
             echo "- ECR push: ✅" >> $GITHUB_STEP_SUMMARY
             echo "- Terraform apply: ✅" >> $GITHUB_STEP_SUMMARY
             echo "- Health check: ✅" >> $GITHUB_STEP_SUMMARY
