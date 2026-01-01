@@ -20,3 +20,8 @@ variable "owner" {
 variable "availability_zones" {
   type = list(string)
 }
+
+variable "image_tag" {
+  type        = string
+  description = "Docker image tag for ECS task definition"
+}
