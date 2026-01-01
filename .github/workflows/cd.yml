@@ -52,7 +52,10 @@ jobs:
             
           run: |
             terraform init
-            terraform apply -auto-approve -var="image_tag=${{ github.sha }}"
+            terraform apply -auto-approve \
+              -var="image_tag=${{ github.sha }}" \
+              -var='availability_zones=["eu-west-2a","eu-west-2b"]'
+
 
         - name: health check
           run: |
