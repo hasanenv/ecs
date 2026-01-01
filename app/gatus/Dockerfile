@@ -12,7 +12,6 @@ RUN adduser -u 10001 -S gatus -g gatus
 WORKDIR /app
 RUN mkdir /app/config
 COPY --from=builder /app/gatus /app/gatus
-COPY --from=builder /app/config.yaml /app/config/config.yaml
 RUN chown -R gatus:gatus /app/config && chown -R gatus:gatus /app
 RUN chmod 500 /app/gatus
 USER gatus
