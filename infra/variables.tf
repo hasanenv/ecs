@@ -1,16 +1,16 @@
 # -------------------------
-# Network (explicit inputs)
+# Network
 # -------------------------
 variable "vpc_cidr" {
-  type = string
+  type    = string
 }
 
 variable "public_subnet_cidrs" {
-  type = list(string)
+  type    = list(string)
 }
 
 variable "private_subnet_cidrs" {
-  type = list(string)
+  type    = list(string)
 }
 
 # -------------------------
@@ -18,17 +18,14 @@ variable "private_subnet_cidrs" {
 # -------------------------
 variable "aws_region" {
   type    = string
-  default = "eu-west-2"
 }
 
 variable "availability_zones" {
   type    = list(string)
-  default = ["eu-west-2a", "eu-west-2b"]
 }
 
 variable "owner" {
   type    = string
-  default = "hasan"
 }
 
 # -------------------------
