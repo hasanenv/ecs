@@ -54,6 +54,7 @@ jobs:
             terraform apply -auto-approve \
               -var="image_tag=${{ github.sha }}" \
               -var='availability_zones=["eu-west-2a","eu-west-2b"]'
+              -var="aws_region=eu-west-2"
 
         - name: health check
           run: |
