@@ -3,7 +3,7 @@ FROM golang:alpine AS builder
 RUN apk --update add ca-certificates
 WORKDIR /app
 COPY . ./
-RUN go build -v -o gatus .
+RUN go build -v -trimpath -ldflags="-s -w" -o gatus .
 
 # stage 2: run the binary
 FROM alpine:3.23
