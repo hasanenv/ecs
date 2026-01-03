@@ -11,6 +11,7 @@ module "vpc" {
 module "iam" {
   source = "./modules/iam"
 
+  cicd_role_name = "hasanenv-cd-role-ecs"
   owner = var.owner
 }
 

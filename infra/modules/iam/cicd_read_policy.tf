@@ -89,6 +89,15 @@ resource "aws_iam_policy" "cicd_read" {
           "iam:ListPolicies"
         ]
         Resource = "*"
+      },
+      {
+        Sid    = "SSMReads"
+        Effect = "Allow"
+        Action = [
+          "ssm:GetParameter",
+          "ssm:GetParameters"
+        ]
+        Resource = "arn:aws:ssm:eu-west-2:727646481331:parameter/gatus/*"
       }
     ]
   })
