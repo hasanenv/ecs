@@ -30,6 +30,13 @@ resource "aws_ecs_task_definition" "gatus_task_def" {
       image     = var.image_url
       essential = true
 
+      secrets = [
+        {
+          name      = "GATUS_CONFIG"
+          valueFrom = var.gatus_config_ssm_arn
+        }
+      ]
+
       portMappings = [
         {
           containerPort = 8080

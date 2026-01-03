@@ -17,11 +17,34 @@ resource "aws_iam_role" "ecs_task_execution_role" {
   tags = local.tags
 }
 
+# allows pulling images from ecr and write logs to CW
 data "aws_iam_policy" "ecs_task_execution_role" {
-  name = "AmazonECSTaskExecutionRolePolicy"
+  name = "AmazonECSTaskExecutionRolePolicy"       
 }
 
 resource "aws_iam_role_policy_attachment" "ecs_task_execution_role_attachment" {
   role       = aws_iam_role.ecs_task_execution_role.name
   policy_arn = data.aws_iam_policy.ecs_task_execution_role.arn
+}
+
+resource "aws_iam_policy" "ecs_task_execution_ssm_policy" {
+  name = "ecs-task-execution-ssm-gatus-config"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "ssm:GetParameter"
+        ]
+        Resource = "arn:aws:ssm:*:*:parameter/gatus/config"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "ecs_task_execution_ssm_attachment" {
+  role       = aws_iam_role.ecs_task_execution_role.name
+  policy_arn = aws_iam_policy.ecs_task_execution_ssm_policy.arn
 }

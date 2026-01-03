@@ -25,3 +25,7 @@ variable "aws_region" {
 variable "private_subnet_ids" {
   type = list(string)
 }
+
+variable "gatus_config_ssm_arn" {
+  type = string
+}

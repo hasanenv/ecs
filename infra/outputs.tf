@@ -17,3 +17,8 @@ output "ecs_service_name" {
   description = "ECS service name"
   value       = module.ecs.service_name
 }
+
+output "gatus_config_ssm_arn" {
+  description = "ARN of the SSM Parameter Store entry containing Gatus config"
+  value       = aws_ssm_parameter.gatus_config.arn
+}
