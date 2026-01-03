@@ -42,3 +42,4 @@ reports/
 
 # Docker
 *.pid
+app/gatus/.examples/

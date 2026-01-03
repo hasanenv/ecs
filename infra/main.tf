@@ -46,7 +46,7 @@ module "alb" {
 }
 
 module "route_53" {
-  source = "./modules/route_53"
+  source = "./modules/route53"
 
   zone_id      = data.aws_route53_zone.hasangatus.zone_id
   zone_name    = data.aws_route53_zone.hasangatus.name
