@@ -6,15 +6,15 @@ resource "aws_iam_policy" "cicd_read" {
     Version = "2012-10-17"
     Statement = [
       {
-        Sid    = "TerraformCoreReads"
-        Effect = "Allow"
-        Action = ["sts:GetCallerIdentity"]
+        Sid      = "TerraformCoreReads"
+        Effect   = "Allow"
+        Action   = ["sts:GetCallerIdentity"]
         Resource = "*"
       },
       {
-        Sid    = "EC2DescribeAll"
-        Effect = "Allow"
-        Action = "ec2:Describe*"
+        Sid      = "EC2DescribeAll"
+        Effect   = "Allow"
+        Action   = "ec2:Describe*"
         Resource = "*"
       },
       {
@@ -63,9 +63,9 @@ resource "aws_iam_policy" "cicd_read" {
         Resource = "*"
       },
       {
-        Sid    = "ELBDescribeAll"
-        Effect = "Allow"
-        Action = "elasticloadbalancing:Describe*"
+        Sid      = "ELBDescribeAll"
+        Effect   = "Allow"
+        Action   = "elasticloadbalancing:Describe*"
         Resource = "*"
       },
       {

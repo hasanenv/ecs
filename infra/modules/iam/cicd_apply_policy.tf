@@ -61,15 +61,15 @@ resource "aws_iam_policy" "cicd_apply" {
         Resource = "arn:aws:dynamodb:eu-west-2:727646481331:table/terraform-state-lock"
       },
       {
-        Sid    = "Route53Changes"
-        Effect = "Allow"
-        Action = ["route53:ChangeResourceRecordSets"]
+        Sid      = "Route53Changes"
+        Effect   = "Allow"
+        Action   = ["route53:ChangeResourceRecordSets"]
         Resource = "arn:aws:route53:::hostedzone/Z0286219X2C9UMZ2LRUH"
       },
       {
-        Sid    = "PassExecutionRole"
-        Effect = "Allow"
-        Action = ["iam:PassRole"]
+        Sid      = "PassExecutionRole"
+        Effect   = "Allow"
+        Action   = ["iam:PassRole"]
         Resource = "arn:aws:iam::727646481331:role/ecsTaskExecutionRole"
       },
       {
