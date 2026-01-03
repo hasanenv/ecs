@@ -19,7 +19,7 @@ resource "aws_iam_role" "ecs_task_execution_role" {
 
 # allows pulling images from ecr and write logs to CW
 data "aws_iam_policy" "ecs_task_execution_role" {
-  name = "AmazonECSTaskExecutionRolePolicy"       
+  name = "AmazonECSTaskExecutionRolePolicy"
 }
 
 resource "aws_iam_role_policy_attachment" "ecs_task_execution_role_attachment" {
