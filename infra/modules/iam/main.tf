@@ -36,9 +36,9 @@ resource "aws_iam_policy" "ecs_task_execution_ssm_policy" {
       {
         Effect = "Allow"
         Action = [
-          "ssm:GetParameter"
+          "ssm:GetParameters"
         ]
-        Resource = "arn:aws:ssm:*:*:parameter/gatus/config"
+        Resource = "arn:aws:ssm:*:*:parameter/gatus/*"
       }
     ]
   })
