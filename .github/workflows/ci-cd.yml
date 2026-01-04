@@ -8,8 +8,12 @@ on:
     inputs:
       infra_ready:
         description: "Is infrastructure deployed?"
+        type: choice
         required: true
         default: "false"
+        options:
+          - "false"
+          - "true"
 
 permissions:
   contents: read
