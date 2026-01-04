@@ -96,6 +96,8 @@ resource "aws_iam_policy" "cicd_read" {
         Action = [
           "ssm:GetParameter",
           "ssm:GetParameters",
+          "ssm:GetParameterHistory",
+          "ssm:ListTagsForResource",
           "ssm:DescribeParameters"
         ]
         Resource = "*"
