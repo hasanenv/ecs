@@ -95,9 +95,10 @@ resource "aws_iam_policy" "cicd_read" {
         Effect = "Allow"
         Action = [
           "ssm:GetParameter",
-          "ssm:GetParameters"
+          "ssm:GetParameters",
+          "ssm:DescribeParameters"
         ]
-        Resource = "arn:aws:ssm:eu-west-2:727646481331:parameter/gatus/*"
+        Resource = "*"
       }
     ]
   })
