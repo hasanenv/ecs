@@ -11,7 +11,8 @@ module "vpc" {
 module "iam" {
   source = "./modules/iam"
 
-  owner = var.owner
+  cicd_role_name = "hasanenv-cd-role-ecs"
+  owner          = var.owner
 }
 
 module "ecr" {
@@ -46,7 +47,7 @@ module "alb" {
 }
 
 module "route_53" {
-  source = "./modules/route_53"
+  source = "./modules/route53"
 
   zone_id      = data.aws_route53_zone.hasangatus.zone_id
   zone_name    = data.aws_route53_zone.hasangatus.name

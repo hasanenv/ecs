@@ -4,4 +4,8 @@ resource "aws_ssm_parameter" "gatus_config" {
   value = file("${path.root}/config/config.yaml")
 
   tags = local.tags
+
+  depends_on = [
+    module.iam
+  ]
 }
