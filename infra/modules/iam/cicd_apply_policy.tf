@@ -87,13 +87,13 @@ resource "aws_iam_policy" "cicd_apply" {
         Sid    = "SSMParameterWrites"
         Effect = "Allow"
         Action = [
-            "ssm:PutParameter",
-            "ssm:DeleteParameter",
-            "ssm:AddTagsToResource",
-            "ssm:RemoveTagsFromResource"
+          "ssm:PutParameter",
+          "ssm:DeleteParameter",
+          "ssm:AddTagsToResource",
+          "ssm:RemoveTagsFromResource"
         ]
         Resource = "*"
-        }
+      }
     ]
   })
 }
