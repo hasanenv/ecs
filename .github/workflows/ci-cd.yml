@@ -5,6 +5,11 @@ on:
     branches: [main]
   pull_request:
   workflow_dispatch:
+    inputs:
+      infra_ready:
+        description: "Is infrastructure deployed?"
+        required: true
+        default: "false"
 
 permissions:
   contents: read
@@ -65,13 +70,14 @@ jobs:
   cd:
     name: CD
     needs: ci
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && github.event.inputs.infra_ready == 'true'
     runs-on: ubuntu-latest
     concurrency:
       group: cd-main
       cancel-in-progress: true
 
     steps:
+
       - name: checkout code
         uses: actions/checkout@v4
 
