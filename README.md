@@ -134,18 +134,25 @@ ecs
 ## CI/CD Workflow
 
 > [!IMPORTANT]
-> CI is treated as a hard gate. No infrastructure changes or deployments occur unless all validation steps succeed.
+> CI is treated as a hard gate. No infrastructure changes or deployments occur unless all validation steps pass.
 
-CI runs on every push and pull request and performs automated validation:
+CI runs on every push and pull request and performs validation only:
 
 - Docker image build for verification  
-- Terraform formatting, linting, and static checks  
+- Terraform formatting, linting, and static checks
+- Security scanning of the container image
 
-CD runs only after CI succeeds (`needs`):
+CD runs only after CI succeeds:
 
+- Manually triggered via GitHub Actions when infrastructure is available
 - Authenticates to AWS using OIDC (no long lived credentials)  
-- Builds and tags images immutably  
-- Applies Terraform and updates ECS task definitions  
+- Builds and tags container images immutably  
+- Applies Terraform and updates ECS task definitions
+
+### Manual Deployment Trigger
+<p align="center">
+  <img src="assets/manual-cd.png" width="350">
+</p>
 
 ### CI/CD Successful Run
 <p align="center">
