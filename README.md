@@ -29,7 +29,7 @@
 
 ## Overview
 
-A **production-grade container platform** built on AWS using **ECS Fargate**, **Terraform**, and **GitHub Actions**.
+A **secure container platform** built on AWS using **ECS Fargate**, **Terraform**, and **GitHub Actions**.
 
 The platform focuses on **infrastructure design, security, and deployment automation**, with an emphasis on architectural clarity, safe delivery, and operational correctness.
 
@@ -43,13 +43,7 @@ The platform focuses on **infrastructure design, security, and deployment automa
 
 ## Architecture Overview
 
-### Gatus UI Running Behind ALB
-
-<p align="center">
-  <img src="assets/gatus-demo.gif" width="1200">
-</p>
-
-The platform runs in a custom VPC spanning two Availability Zones and follows standard AWS production patterns:
+The platform runs in a custom VPC spanning two Availability Zones and follows standard AWS reference architectures used in real deployments:
 
 - Public subnets hosting an Application Load Balancer
 - Private subnets running ECS Fargate tasks
@@ -57,6 +51,12 @@ The platform runs in a custom VPC spanning two Availability Zones and follows st
 - Runtime configuration stored in **SSM Parameter Store**
 - Centralised logging via CloudWatch
 - Provisioned and managed through Terraform
+
+### Gatus UI Running Behind ALB
+
+<p align="center">
+  <img src="assets/gatus-demo.gif" width="1200">
+</p>
 
 ## Repository Structure
 
@@ -144,29 +144,25 @@ CI runs on every push and pull request and performs validation only:
 
 CD runs only after CI succeeds:
 
-- Manually triggered via GitHub Actions when infrastructure is available
+- Manually triggered via GitHub Actions when infrastructure is available (added later)
 - Authenticates to AWS using OIDC (no long lived credentials)  
 - Builds and tags container images immutably  
 - Applies Terraform and updates ECS task definitions
-
-### Manual Deployment Trigger
-<p align="center">
-  <img src="assets/manual-cd.png" width="350">
-</p>
 
 ### CI/CD Successful Run
 <p align="center">
   <img src="assets/cicd-summary.png" width="700">
 </p>
 
-### Deployment Summary
+### Manual Deployment Trigger
 <p align="center">
-  <img src="assets/job-summary.png" width="700">
+  <img src="assets/manual-cd.png" width="350">
 </p>
 
 ## Containers & Runtime
 
 - Multi-stage Docker build strips out tooling and reduces image size
+- Reduced final image size by ~60% (from ~120 MB to ~75 MB)
 - Explicit non-root user enforcing least privilege at runtime
 - Reduced attack surface by removing unused binaries, package managers, and shells
 
@@ -206,11 +202,28 @@ Some design choices reflect deliberate tradeoffs:
 - Single NAT Gateway chosen to control cost on outbound traffic
 - ECS Fargate avoids EC2 operational overhead
 
+## Future Improvements
+
+Several improvements could be made to extend the platform further:
+
+- Refactor Terraform modules to make heavier use of `for_each` and maps to reduce repetition and improve scalability
+- Split the CI/CD workflow into separate pipelines for clearer separation of concerns (for example):
+  - Terraform plan (validation and review)
+  - Terraform apply (controlled deployment)
+  - Application build and image publishing
+ 
+- Introduce path-based workflow triggers so pipelines run only when relevant parts of the repository change:
+  - Infrastructure pipelines trigger only on changes under `infra/`
+  - Application build and image push trigger only on changes under `app/`
+ 
+- Add environment-based workflows (for example dev and prod) with promotion between stages
+- Extend observability with CloudWatch alarms and metrics once usage patter
+
 ---
 
 ## What This Project Demonstrates
 
-- Production-minded AWS architecture
+- AWS architecture designed with real operational constraints in mind
 - Secure CI/CD using modern authentication patterns
 - Infrastructure that is easy to reason about and audit
 - Clear separation of concerns
