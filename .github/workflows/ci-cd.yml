@@ -15,6 +15,12 @@ on:
           - "false"
           - "true"
 
+env:
+  AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+  ECR_REPO_NAME: ${{ secrets.ECR_REPO_NAME }}
+  ECR_REGISTRY: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
+
 permissions:
   contents: read
   id-token: write
@@ -64,12 +70,12 @@ jobs:
 
       - name: CI summary
         run: |
-          echo "## CI Results" >> $GITHUB_STEP_SUMMARY
-          echo "- Docker build: ✅" >> $GITHUB_STEP_SUMMARY
-          echo "- Terraform fmt: ✅" >> $GITHUB_STEP_SUMMARY
-          echo "- Terraform validate: ✅" >> $GITHUB_STEP_SUMMARY
-          echo "- tflint: ✅" >> $GITHUB_STEP_SUMMARY
-          echo "- Image scan: ✅" >> $GITHUB_STEP_SUMMARY
+          echo "## CI Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- Docker image built successfully" >> $GITHUB_STEP_SUMMARY
+          echo "- Terraform formatting checked" >> $GITHUB_STEP_SUMMARY
+          echo "- Terraform configuration validated" >> $GITHUB_STEP_SUMMARY
+          echo "- tflint checks completed" >> $GITHUB_STEP_SUMMARY
+          echo "- Container image scanned for high severity issues" >> $GITHUB_STEP_SUMMARY
 
   cd:
     name: CD
@@ -93,26 +99,28 @@ jobs:
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::727646481331:role/hasanenv-cd-role-ecs
-          aws-region: eu-west-2
+          role-to-assume: arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:role/hasanenv-cd-role-ecs
+          aws-region: ${{ env.AWS_REGION }}
 
       - name: auth to ecr
         run: |
-          aws ecr get-login-password --region eu-west-2 \
-          | docker login --username AWS --password-stdin 727646481331.dkr.ecr.eu-west-2.amazonaws.com
+          aws ecr get-login-password --region ${{ env.AWS_REGION }} \
+          | docker login --username AWS --password-stdin ${{ env.ECR_REGISTRY }}
 
       - name: build image, tag, push
         run: |
-          docker build -t hasanenv/gatus:${{ github.sha }} ./app/gatus
-          docker tag hasanenv/gatus:${{ github.sha }} 727646481331.dkr.ecr.eu-west-2.amazonaws.com/gatus-repo:${{ github.sha }}
-          docker push 727646481331.dkr.ecr.eu-west-2.amazonaws.com/gatus-repo:${{ github.sha }}
+          docker build -t gatus:${{ github.sha }} ./app/gatus
+
+          docker tag gatus:${{ github.sha }} ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPO_NAME }}:${{ github.sha }}
+
+          docker push ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPO_NAME }}:${{ github.sha }}
 
       - name: terraform deploy
         working-directory: infra/
         env:
           TF_IN_AUTOMATION: true
           TF_VAR_image_tag: ${{ github.sha }}
-          TF_VAR_aws_region: eu-west-2
+          TF_VAR_aws_region: ${{ env.AWS_REGION }}
           TF_VAR_owner: hasan
           TF_VAR_availability_zones: '["eu-west-2a","eu-west-2b"]'
           TF_VAR_vpc_cidr: "10.0.0.0/16"
@@ -128,8 +136,8 @@ jobs:
       - name: CD summary
         if: always()
         run: |
-          echo "## CD Deployment Summary" >> $GITHUB_STEP_SUMMARY
-          echo "- Image tag: \`$GITHUB_SHA\`" >> $GITHUB_STEP_SUMMARY
-          echo "- ECR push: ✅" >> $GITHUB_STEP_SUMMARY
-          echo "- Terraform apply: ✅" >> $GITHUB_STEP_SUMMARY
-          echo "- Health check: ✅" >> $GITHUB_STEP_SUMMARY
+          echo "## Deployment Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- Image built and pushed to ECR" >> $GITHUB_STEP_SUMMARY
+          echo "- Terraform applied successfully" >> $GITHUB_STEP_SUMMARY
+          echo "- ECS service updated with new task definition" >> $GITHUB_STEP_SUMMARY
+          echo "- Application health check completed" >> $GITHUB_STEP_SUMMARY
