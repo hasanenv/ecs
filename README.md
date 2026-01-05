@@ -45,7 +45,7 @@ The platform focuses on **infrastructure design, security, and deployment automa
 
 The platform runs in a custom VPC spanning two Availability Zones and follows standard AWS reference architectures used in real deployments:
 
-- Public subnets hosting an Application Load Balancer
+- Public subnets hosting an Application Load Balancer (multi-AZ) and a standard zonal NAT Gateway
 - Private subnets running ECS Fargate tasks
 - HTTPS and HTTP redirect enforced using ACM and Route 53
 - Runtime configuration stored in **SSM Parameter Store**
@@ -198,8 +198,8 @@ Access control is a foundational part of the platform design:
 
 Some design choices reflect deliberate tradeoffs:
 
-- High availability on ingress paths (ALB, multi AZ), while NAT is single AZ by design
-- Single NAT Gateway chosen to control cost on outbound traffic
+- High availability on ingress paths (ALB, multi AZ)
+- Single zonal NAT Gateway chosen to control cost on outbound traffic
 - ECS Fargate avoids EC2 operational overhead
 
 ## Future Improvements
@@ -217,7 +217,8 @@ Several improvements could be made to extend the platform further:
   - Application build and image push trigger only on changes under `app/`
  
 - Add environment-based workflows (for example dev and prod) with promotion between stages
-- Extend observability with CloudWatch alarms and metrics once usage patter
+- Extend observability with CloudWatch alarms and metrics
+- Revisit NAT Gateway design to evaluate regional vs single-AZ NAT Gateways (following recent AWS changes)
 
 ---
 
