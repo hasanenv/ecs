@@ -61,7 +61,8 @@ The platform runs in a custom VPC spanning two Availability Zones and follows st
 ## Repository Structure
 
 ```
-ecs
+ecs-fargate-platform
+|
 ├─ .github/
 │  └─ workflows/
 │     └─ ci-cd.yml
@@ -88,44 +89,13 @@ ecs
 │  │  └─ config.yaml
 │  └─ modules/
 │     ├─ acm/
-│     │  ├─ main.tf
-│     │  ├─ variables.tf
-│     │  ├─ outputs.tf
-│     │  └─ locals.tf
 │     ├─ alb/
-│     │  ├─ main.tf
-│     │  ├─ variables.tf
-│     │  ├─ outputs.tf
-│     │  └─ locals.tf
 │     ├─ ecr/
-│     │  ├─ main.tf
-│     │  ├─ variables.tf
-│     │  ├─ outputs.tf
-│     │  └─ locals.tf
 │     ├─ ecs/
-│     │  ├─ main.tf
-│     │  ├─ variables.tf
-│     │  ├─ outputs.tf
-│     │  └─ locals.tf
 │     ├─ iam/
-│     │  ├─ main.tf
-│     │  ├─ variables.tf
-│     │  ├─ outputs.tf
-│     │  └─ locals.tf
 │     ├─ route53/
-│     │  ├─ main.tf
-│     │  ├─ variables.tf
-│     │  └─ outputs.tf
 │     ├─ security-groups/
-│     │  ├─ main.tf
-│     │  ├─ variables.tf
-│     │  ├─ outputs.tf
-│     │  └─ locals.tf
 │     └─ vpc/
-│        ├─ main.tf
-│        ├─ variables.tf
-│        ├─ outputs.tf
-│        └─ locals.tf
 ├─ .gitignore
 ├─ LICENSE
 └─ README.md
