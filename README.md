@@ -75,7 +75,7 @@ ecs-fargate-platform
 │  ├─ ecs-diagram.png
 │  ├─ gatus-demo.gif
 │  ├─ cicd-summary.png
-│  └─ job-summary.png
+│  └─ manual-cd.png
 ├─ infra/
 │  ├─ main.tf
 │  ├─ provider.tf
